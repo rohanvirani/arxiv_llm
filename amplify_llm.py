@@ -11,6 +11,7 @@ from bs4 import BeautifulSoup
 # index over papers using llama index
 # prompt and learn about papers and coauthors 
 # serve up on front end 
+OPENAI_API_KEY="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"
 
 def gen_results(name, query):
     name_split = name.split()
