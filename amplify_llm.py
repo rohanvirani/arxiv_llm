@@ -1,8 +1,8 @@
 import streamlit as st
 import pandas as pd
-import urllib
-import feedparser
+from urllib.request import urlopen
 from llama_index import Document, GPTSimpleVectorIndex
+from bs4 import BeautifulSoup
 
 # i want to enter someone's name and get their information and ask questions about their work
 
@@ -15,13 +15,16 @@ from llama_index import Document, GPTSimpleVectorIndex
 def gen_results(name, query):
     name_split = name.split()
     url = 'http://export.arxiv.org/api/query?search_query=au:"' + name_split[0] + '%20' + name_split[1] + '"&start=0&max_results=30&sortBy=submittedDate&sortOrder=descending'
-    data = urllib.urlopen(url).read()
-    feed = feedparser.parse(data)
+    with urlopen(url) as response:
+        data = response.read()
+
+    soup = BeautifulSoup(data, 'xml')
+    article_info = soup.find_all('entry')
 
     abstract_list = []
 
-    for entry in feed.entries:
-        abstract_list.append(entry.summary)
+    for i in article_info:
+        abstract_list.append(i.summary.text)
     documents = [Document(t) for t in abstract_list]
     index = GPTSimpleVectorIndex.from_documents(documents)
     response = index.query("What did the author do growing up?")
