@@ -33,7 +33,7 @@ def gen_results(name, query):
     service_context = ServiceContext.from_defaults(chunk_size_limit=1024, llm_predictor=stablelm_predictor)
     documents = [Document(t) for t in abstract_list]
     index = GPTSimpleVectorIndex.from_documents(documents,service_context)
-    response = index.query("What did the author do growing up?")
+    response = index.query(query)
     return response
 
 title = st.title("Amplify Academic Search")
