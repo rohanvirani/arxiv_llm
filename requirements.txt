@@ -2,3 +2,4 @@ llama-index
 bs4
 lxml
 transformers
+pytorch
