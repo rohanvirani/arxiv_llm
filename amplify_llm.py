@@ -5,7 +5,6 @@ from llama_index import Document, GPTSimpleVectorIndex, ServiceContext
 from llama_index.llm_predictor import StableLMPredictor
 from bs4 import BeautifulSoup
 import os
-from langchain import HuggingFaceHub
 
 # i want to enter someone's name and get their information and ask questions about their work
 
@@ -30,10 +29,8 @@ def gen_results(name, query):
     for i in article_info:
         abstract_list.append(i.summary.text)
     
-    repo_id = "google/flan-t5-xl" # See https://huggingface.co/models?pipeline_tag=text-generation&sort=downloads for some other options
-
-    llm = HuggingFaceHub(repo_id=repo_id, model_kwargs={"temperature":0, "max_length":64})
-    service_context = ServiceContext.from_defaults(chunk_size_limit=1024, llm_predictor=llm)
+    stablelm_predictor = StableLMPredictor()
+    service_context = ServiceContext.from_defaults(llm_predictor=stablelm_predictor)
     documents = [Document(t) for t in abstract_list]
     index = GPTSimpleVectorIndex.from_documents(documents,service_context)
     response = index.query(query)
