@@ -1,2 +1,3 @@
 llama-index
 bs4
+lxml
