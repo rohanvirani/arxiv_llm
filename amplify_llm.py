@@ -3,6 +3,7 @@ import pandas as pd
 from urllib.request import urlopen
 from llama_index import Document, GPTSimpleVectorIndex
 from bs4 import BeautifulSoup
+import os
 
 # i want to enter someone's name and get their information and ask questions about their work
 
@@ -11,7 +12,7 @@ from bs4 import BeautifulSoup
 # index over papers using llama index
 # prompt and learn about papers and coauthors 
 # serve up on front end 
-OPENAI_API_KEY="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"
+os.environ['OPENAI_API_KEY'] ="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"
 
 def gen_results(name, query):
     name_split = name.split()
