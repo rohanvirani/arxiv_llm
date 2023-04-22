@@ -32,8 +32,11 @@ def gen_results(name, query):
     stablelm_predictor = StableLMPredictor()
     service_context = ServiceContext.from_defaults(llm_predictor=stablelm_predictor)
     documents = [Document(t) for t in abstract_list]
+    print("pre document")
     index = GPTSimpleVectorIndex.from_documents(documents,service_context)
+    print("post document")
     response = index.query(query)
+    print("post query")
     return response
 
 title = st.title("Amplify Academic Search")
